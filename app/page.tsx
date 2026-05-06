@@ -1,5 +1,5 @@
 export default function Home() {
-  const files = [
+  const dsbdFiles = [
     "vertopal.com_DSBDAL_Exp_01.txt",
     "vertopal.com_DSBDAL_Exp_02.txt",
     "vertopal.com_DSBDAL_Exp_03.txt",
@@ -12,13 +12,33 @@ export default function Home() {
     "vertopal.com_DSBDAL_Exp_10.txt",
   ];
 
+  const aiFiles = [
+    "ai1.txt",
+    "ai2.txt",
+    "ai3.txt",
+    "ai4.txt",
+    "ai5.txt",
+    "ai6.txt",
+  ];
+
   return (
     <div className="container">
       <h1>DSBD</h1>
       <div className="grid">
-        {files.map((file, index) => (
+        {dsbdFiles.map((file, index) => (
           <div key={file} className="download-item">
             <a href={`/DSBD/${file}`} download={file}>
+              <button className="download-btn">Download Exp {index + 1}</button>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <h1>AI</h1>
+      <div className="grid">
+        {aiFiles.map((file, index) => (
+          <div key={file} className="download-item">
+            <a href={`/ai/${file}`} download={file}>
               <button className="download-btn">Download Exp {index + 1}</button>
             </a>
           </div>

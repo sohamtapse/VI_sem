@@ -16,9 +16,9 @@ export default function Home() {
     "ai1.txt",
     "ai2.txt",
     "ai3.txt",
-    "ai4.txt",
+    "ai_4.txt",
     "ai5.txt",
-    "ai6.txt",
+    "ai_6.txt",
   ];
 
   return (

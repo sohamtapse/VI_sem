@@ -1,0 +1,117 @@
+# ---------------- PRINT BOARD ----------------
+def printBoard(board, N):
+    for i in range(N):
+        for j in range(N):
+            print(board[i][j], end=" ")
+        print()
+    print()
+
+
+# ---------------- BACKTRACKING ----------------
+def isSafe_Backtracking(board, row, col, N):
+
+    # Check column
+    for i in range(row):
+        if board[i][col] == "Q":
+            return False
+
+    # Check left diagonal
+    i, j = row, col
+    while i >= 0 and j >= 0:
+        if board[i][j] == "Q":
+            return False
+        i -= 1
+        j -= 1
+
+    # Check right diagonal
+    i, j = row, col
+    while i >= 0 and j < N:
+        if board[i][j] == "Q":
+            return False
+        i -= 1
+        j += 1
+
+    return True
+
+
+def solve_Backtracking(board, row, N):
+
+    if row == N:
+        return True
+
+    for col in range(N):
+
+        if isSafe_Backtracking(board, row, col, N):
+            board[row][col] = "Q"
+
+            if solve_Backtracking(board, row + 1, N):
+                return True
+
+            # Backtrack
+            board[row][col] = "."
+
+    return False
+
+
+# ---------------- BRANCH AND BOUND ----------------
+def solve_BnB(board, row, N, col, posDiag, negDiag):
+
+    if row == N:
+        return True
+
+    for c in range(N):
+
+        if col[c] == 1 or posDiag[row + c] == 1 or negDiag[row - c + N - 1] == 1:
+            continue
+
+        board[row][c] = "Q"
+        col[c] = 1
+        posDiag[row + c] = 1
+        negDiag[row - c + N - 1] = 1
+
+        if solve_BnB(board, row + 1, N, col, posDiag, negDiag):
+            return True
+
+        # Backtrack
+        board[row][c] = "."
+        col[c] = 0
+        posDiag[row + c] = 0
+        negDiag[row - c + N - 1] = 0
+
+    return False
+
+
+# ---------------- MAIN PROGRAM ----------------
+N = int(input("Enter number of queens: "))
+
+print("\nChoose Method:")
+print("1. Backtracking")
+print("2. Branch and Bound")
+
+choice = int(input("Enter your choice: "))
+
+# Initialize board
+board = [["." for _ in range(N)] for _ in range(N)]
+
+if choice == 1:
+
+    if solve_Backtracking(board, 0, N):
+        print("\nSolution using Backtracking:\n")
+        printBoard(board, N)
+    else:
+        print("No solution found.")
+
+elif choice == 2:
+
+    col = [0] * N
+    posDiag = [0] * (2 * N)
+    negDiag = [0] * (2 * N)
+
+    if solve_BnB(board, 0, N, col, posDiag, negDiag):
+        print("\nSolution using Branch and Bound:\n")
+        printBoard(board, N)
+    else:
+        print("No solution found.")
+
+else:
+    print("Invalid choice.")

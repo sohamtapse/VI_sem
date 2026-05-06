@@ -1,0 +1,49 @@
+class ExpertSystem:
+
+    def __init__(self):
+        self.facts = {}
+        self.rules = {}
+
+    def add_fact(self, fact, value):
+        self.facts[fact] = value
+
+    def add_rule(self, rule, condition):
+        self.rules[rule] = condition
+
+    def infer(self):
+
+        for rule, condition in self.rules.items():
+            match = True
+
+            for fact, value in condition.items():
+                if self.facts.get(fact) != value:
+                    match = False
+
+            if match:
+                return rule
+
+        return "No diagnosis found"
+
+
+# ---------------- MAIN PROGRAM ----------------
+expert = ExpertSystem()
+
+# Taking symptoms from user
+fever = input("Do you have fever (yes/no)? ")
+cough = input("Do you have cough (yes/no)? ")
+headache = input("Do you have headache (yes/no)? ")
+
+# Add facts
+expert.add_fact("fever", fever)
+expert.add_fact("cough", cough)
+expert.add_fact("headache", headache)
+
+# Add rules
+expert.add_rule("You may have Flu", {"fever": "yes", "cough": "yes"})
+expert.add_rule("You may have Migraine", {"headache": "yes"})
+expert.add_rule("You may have Cold", {"cough": "yes"})
+
+# Inference
+result = expert.infer()
+
+print("\nDiagnosis:", result)
